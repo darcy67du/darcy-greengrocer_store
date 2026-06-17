@@ -1,0 +1,28 @@
+Options -Indexes
+Options -MultiViews
+
+# Prevent direct access to includes
+<FilesMatch "^(config|header|footer|admin_header|admin_footer)\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# PHP settings (InfinityFree compatible)
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_value upload_max_filesize 5M
+    php_value post_max_size 8M
+    php_value session.cookie_httponly 1
+</IfModule>
+
+# Redirect www to non-www (optional, update domain)
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ http://%1%{REQUEST_URI} [R=301,L]
